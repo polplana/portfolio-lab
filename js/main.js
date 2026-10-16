@@ -43,11 +43,22 @@ function renderProfile({ perfil }) {
   setText('[data-profile-nombre]', perfil.nombre);
   setText('[data-profile-claim]', perfil.claim);
 
-  // Foto
+  // Foto (con fallback a avatar de iniciales si la imagen no carga)
   const foto = document.querySelector('[data-profile-foto]');
   if (foto && perfil.foto) {
     foto.src = perfil.foto;
     foto.alt = `Foto de ${perfil.nombre}`;
+    foto.addEventListener('error', () => {
+      const iniciales = (perfil.nombre || '?')
+        .split(' ')
+        .map((p) => p[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase();
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><rect width="160" height="160" rx="16" fill="#EDE9FE"/><text x="80" y="92" font-family="sans-serif" font-size="56" font-weight="600" fill="#6D28D9" text-anchor="middle">${iniciales}</text></svg>`;
+      foto.src = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+      foto.alt = `Avatar con iniciales de ${perfil.nombre}`;
+    }, { once: true });
   }
 
   // Píldora de disponibilidad
@@ -132,14 +143,21 @@ function createProjectCard(proyecto) {
   const li = document.createElement('li');
   li.className = 'project-card';
 
-  // Marco + imagen
+  // Marco + imagen (con placeholder si no hay imagen o falla la carga)
   const frame = document.createElement('div');
   frame.className = 'project-card__frame';
-  const img = document.createElement('img');
-  img.src = proyecto.imagen;
-  img.alt = `Captura del proyecto ${proyecto.nombre}`;
-  img.loading = 'lazy';
-  frame.append(img);
+  if (proyecto.imagen) {
+    const img = document.createElement('img');
+    img.src = proyecto.imagen;
+    img.alt = `Captura del proyecto ${proyecto.nombre}`;
+    img.loading = 'lazy';
+    img.addEventListener('error', () => {
+      img.replaceWith(createProjectPlaceholder(proyecto.nombre));
+    }, { once: true });
+    frame.append(img);
+  } else {
+    frame.append(createProjectPlaceholder(proyecto.nombre));
+  }
 
   // Nombre y descripción
   const nombre = document.createElement('h3');
@@ -160,15 +178,34 @@ function createProjectCard(proyecto) {
   fecha.textContent = proyecto.fecha;
   meta.append(chip, fecha);
 
-  // Enlace al repo
-  const enlace = document.createElement('a');
-  enlace.className = 'project-card__enlace';
-  enlace.href = proyecto.enlace;
-  enlace.rel = 'noopener noreferrer';
-  enlace.textContent = 'Ver repositorio';
+  li.append(frame, nombre, descripcion, meta);
 
-  li.append(frame, nombre, descripcion, meta, enlace);
+  // Enlace al repo: solo si existe
+  if (proyecto.enlace) {
+    const enlace = document.createElement('a');
+    enlace.className = 'project-card__enlace';
+    enlace.href = proyecto.enlace;
+    enlace.target = '_blank';
+    enlace.rel = 'noopener noreferrer';
+    enlace.textContent = 'Ver repositorio';
+    li.append(enlace);
+  }
+
   return li;
+}
+
+/**
+ * Placeholder SVG para proyectos sin imagen (16:10, fondo surface, icono).
+ * @param {string} nombreProyecto
+ * @returns {HTMLDivElement}
+ */
+function createProjectPlaceholder(nombreProyecto) {
+  const div = document.createElement('div');
+  div.className = 'project-card__placeholder';
+  div.setAttribute('role', 'img');
+  div.setAttribute('aria-label', `Sin imagen disponible para ${nombreProyecto}`);
+  div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>`;
+  return div;
 }
 
 /**
@@ -191,8 +228,35 @@ function renderProjects({ proyectos }) {
 
 /* ---- Init -------------------------------------------------------------- */
 
+/**
+ * Pinta el aviso de error de carga con botón de reintento.
+ * El aviso se muestra en el contenedor global [data-global-estado] (hero),
+ * visible aunque falle cualquiera de los dos JSON.
+ */
+function showLoadError() {
+  const contenedor = document.querySelector('[data-global-estado]');
+  if (!contenedor) return;
+
+  const mensaje = document.createElement('span');
+  mensaje.textContent = 'No se han podido cargar los datos. ';
+
+  const reintento = document.createElement('button');
+  reintento.type = 'button';
+  reintento.className = 'btn-reintento';
+  reintento.textContent = 'Reintentar';
+  reintento.addEventListener('click', () => {
+    contenedor.hidden = true;
+    contenedor.replaceChildren();
+    init();
+  });
+
+  contenedor.replaceChildren(mensaje, reintento);
+  contenedor.hidden = false;
+}
+
 async function init() {
   const estado = document.querySelector('[data-projects-estado]');
+  if (estado) estado.textContent = 'Cargando proyectos…';
 
   try {
     const [profile, projects] = await Promise.all([
@@ -203,10 +267,8 @@ async function init() {
     renderProjects(projects);
   } catch (error) {
     console.error('[portfolio] Error cargando datos:', error);
-    if (estado) {
-      estado.textContent =
-        'No se han podido cargar los datos. Inténtalo de nuevo más tarde.';
-    }
+    if (estado) estado.textContent = '';
+    showLoadError();
   }
 }
 

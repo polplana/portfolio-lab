@@ -33,13 +33,14 @@
           <span data-profile-disponibilidad-texto></span>
         </p>
         <ul class="hero__ahora" data-profile-ahora aria-label="Ahora"></ul>
+        <div class="section__estado" data-global-estado role="alert" hidden></div>
       </div>
     </section>
     <section id="proyectos" class="section" aria-labelledby="proyectos-titulo">
       <div class="section__inner">
         <p class="section__kicker">Proyectos</p>
         <h2 id="proyectos-titulo" class="section__titulo">Cosas que he construido</h2>
-        <p class="section__estado" data-projects-estado role="status"></p>
+        <div class="section__estado" data-projects-estado role="status" aria-live="polite"></div>
         <ul class="projects-grid" data-projects-lista></ul>
       </div>
     </section>
@@ -57,8 +58,8 @@
         <h2 id="contacto-titulo" class="section__titulo">Hablemos</h2>
         <ul class="contacto__lista">
           <li><a class="contacto__enlace" data-profile-correo href="#"></a></li>
-          <li><a class="contacto__enlace" data-profile-github href="#" rel="noopener noreferrer">GitHub</a></li>
-          <li><a class="contacto__enlace" data-profile-linkedin href="#" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a class="contacto__enlace" data-profile-github href="#" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a class="contacto__enlace" data-profile-linkedin href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
         </ul>
       </div>
     </section>
@@ -66,6 +67,7 @@
   <footer class="footer">
     <div class="footer__inner">
       <p class="footer__nota">Portfolio de ejemplo · Construido con HTML, CSS y JavaScript.</p>
+      <p class="footer__atribucion">Foto de <a href="https://unsplash.com/@vhladynets" target="_blank" rel="noopener noreferrer">Vicky Hladynets</a> en <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a></p>
     </div>
   </footer>
   <script src="js/main.js" defer></script>

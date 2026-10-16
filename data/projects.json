@@ -35,6 +35,13 @@
       "imagen": "assets/project-04.jpg",
       "enlace": "https://github.com/alex-ejemplo/recetas",
       "fecha": "2025-06"
+    },
+    {
+      "id": "notas-terminal",
+      "nombre": "Notas en la terminal",
+      "descripcion": "CLI para tomar notas rápidas sin salir de la terminal, con búsqueda por etiquetas. En desarrollo.",
+      "tecnologia": "Python",
+      "fecha": "2026-09"
     }
   ]
 }
