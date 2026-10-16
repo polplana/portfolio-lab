@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio de Alex — Desarrollador multiplataforma en formación. Proyectos, tecnologías y contacto.">
+  <title>Alex · Portfolio</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="topbar__identity" href="#inicio" data-profile-name>Alex</a>
+      <nav class="topbar__nav" aria-label="Navegación principal">
+        <a href="#proyectos">Proyectos</a>
+        <a href="#sobre-mi">Sobre mí</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+  <main id="contenido">
+    <section id="inicio" class="hero" aria-labelledby="hero-titulo">
+      <div class="hero__inner">
+        <figure class="hero__foto">
+          <img data-profile-foto src="assets/profile.jpg" alt="" width="160" height="160">
+        </figure>
+        <p class="hero__titular" data-profile-titular></p>
+        <h1 id="hero-titulo" class="hero__nombre" data-profile-nombre></h1>
+        <p class="hero__claim" data-profile-claim></p>
+        <p class="pill" data-profile-disponibilidad hidden>
+          <span class="pill__dot" aria-hidden="true"></span>
+          <span data-profile-disponibilidad-texto></span>
+        </p>
+        <ul class="hero__ahora" data-profile-ahora aria-label="Ahora"></ul>
+      </div>
+    </section>
+    <section id="proyectos" class="section" aria-labelledby="proyectos-titulo">
+      <div class="section__inner">
+        <p class="section__kicker">Proyectos</p>
+        <h2 id="proyectos-titulo" class="section__titulo">Cosas que he construido</h2>
+        <p class="section__estado" data-projects-estado role="status"></p>
+        <ul class="projects-grid" data-projects-lista></ul>
+      </div>
+    </section>
+    <section id="sobre-mi" class="section" aria-labelledby="sobre-mi-titulo">
+      <div class="section__inner section__inner--lectura">
+        <p class="section__kicker">Sobre mí</p>
+        <h2 id="sobre-mi-titulo" class="section__titulo">Quién soy</h2>
+        <div class="sobre-mi__texto" data-profile-sobremi></div>
+        <div class="stack" data-profile-stack></div>
+      </div>
+    </section>
+    <section id="contacto" class="section" aria-labelledby="contacto-titulo">
+      <div class="section__inner section__inner--lectura">
+        <p class="section__kicker">Contacto</p>
+        <h2 id="contacto-titulo" class="section__titulo">Hablemos</h2>
+        <ul class="contacto__lista">
+          <li><a class="contacto__enlace" data-profile-correo href="#"></a></li>
+          <li><a class="contacto__enlace" data-profile-github href="#" rel="noopener noreferrer">GitHub</a></li>
+          <li><a class="contacto__enlace" data-profile-linkedin href="#" rel="noopener noreferrer">LinkedIn</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__nota">Portfolio de ejemplo · Construido con HTML, CSS y JavaScript.</p>
+    </div>
+  </footer>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

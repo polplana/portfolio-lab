@@ -1,0 +1,366 @@
+/* ==========================================================================
+   styles.css — Portfolio (SPEC-001 / DESIGN-001)
+   Mobile-first. Tokens de DESIGN-001 v1 (cerrado, no modificar valores).
+   ========================================================================== */
+
+/* ---- Reset ---------------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+svg { display: block; max-width: 100%; }
+
+input,
+button,
+textarea,
+select { font: inherit; }
+
+ul[role="list"],
+ol[role="list"] { list-style: none; padding: 0; }
+
+/* ---- Variables (tokens DESIGN-001) ---------------------------------- */
+:root {
+  /* Color · neutros */
+  --bg: #FFFFFF;
+  --ink: #0A0A0A;
+  --ink-2: #404040;
+  --muted: #595959;
+  --surface: #F5F5F5;
+  --surface-2: #EDEDED;
+  --border: #E5E5E5;
+  --border-strong: #D4D4D4;
+  --btn: #171717;
+  --btn-ink: #FAFAFA;
+
+  /* Color · acento (Violeta, por defecto; configurable por estudiante) */
+  --accent: #6D28D9;
+  --accent-soft: #EDE9FE;
+
+  /* Color · semánticos (independientes del acento) */
+  --ok: #047857;
+  --warn: #A16207;
+  --bad: #B91C1C;
+
+  /* Tipografía */
+  --font-text: "Geist", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Espacio y medidas */
+  --max-content: 1120px;
+  --max-reading: 720px;
+  --gutter: 24px;          /* ≥900px: 48px */
+  --section-gap: 64px;     /* ≥900px: 96px */
+  --topbar-h: 56px;
+
+  /* Radios */
+  --radius-s: 8px;         /* botones, chips */
+  --radius-m: 12px;        /* bloques */
+  --radius-l: 16px;        /* marcos de imagen */
+  --radius-full: 999px;    /* píldoras */
+
+  /* Movimiento */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --t-color: 150ms;
+  --t-identity: 200ms;
+  --t-hero: 400ms;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --gutter: 48px;
+    --section-gap: 96px;
+  }
+}
+
+/* ---- Base ----------------------------------------------------------- */
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 17px;         /* texto corrido: 17px/28px */
+  line-height: 28px;
+}
+
+h1, h2, h3 { font-weight: 600; line-height: 1.2; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+
+/* Foco de teclado siempre visible: 2px acento, separado 3px (DESIGN-001 §6) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-s);
+}
+
+/* Enlace de salto al contenido */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--gutter);
+  z-index: 10;
+  padding: 8px 16px;
+  background: var(--btn);
+  color: var(--btn-ink);
+  border-radius: var(--radius-s);
+  transition: top var(--t-color) var(--ease);
+}
+.skip-link:focus { top: 8px; }
+
+/* ---- Barra superior -------------------------------------------------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  height: var(--topbar-h);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.topbar__inner {
+  max-width: var(--max-content);
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar__identity { font-weight: 600; }
+.topbar__nav { display: flex; gap: 24px; }
+.topbar__nav a {
+  min-height: 44px;        /* touch target */
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: 15px;
+  transition: color var(--t-color) var(--ease);
+}
+.topbar__nav a:hover { color: var(--ink); text-decoration: none; }
+
+/* ---- Portada ---------------------------------------------------------- */
+.hero__inner {
+  max-width: var(--max-reading);
+  margin: 0 auto;
+  padding: var(--section-gap) var(--gutter) 0;
+}
+.hero__foto img {
+  width: 160px;
+  height: 160px;
+  border-radius: var(--radius-l);
+  object-fit: cover;
+}
+.hero__titular {
+  margin-top: 24px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.hero__nombre {
+  margin-top: 8px;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1.05;
+}
+.hero__claim {
+  margin-top: 16px;
+  font-size: 20px;
+  line-height: 30px;
+  color: var(--ink-2);
+}
+
+/* Píldora de disponibilidad: punto de acento + texto (nunca solo color) */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 0 16px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--ink-2);
+}
+.pill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  flex: none;
+}
+
+.hero__ahora { margin-top: 32px; padding-left: 20px; color: var(--ink-2); }
+.hero__ahora li + li { margin-top: 8px; }
+
+/* ---- Secciones -------------------------------------------------------- */
+.section__inner {
+  max-width: var(--max-content);
+  margin: 0 auto;
+  padding: var(--section-gap) var(--gutter) 0;
+}
+.section__inner--lectura { max-width: var(--max-reading); }
+.section__kicker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.section__titulo { margin-top: 8px; font-size: 28px; }
+.section__estado { margin-top: 16px; color: var(--muted); }
+.section__estado:empty { display: none; }
+
+/* ---- Rejilla de proyectos --------------------------------------------- */
+.projects-grid {
+  margin-top: 32px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 32px;
+}
+@media (min-width: 900px) {
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Marco de proyecto: 12px accent-soft, imagen 16:10 radio 8px (DESIGN-001 §4) */
+.project-card__frame {
+  padding: 12px;
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
+  transition: border-color var(--t-color) var(--ease);
+}
+.project-card__frame img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--radius-s);
+  transition: transform var(--t-color) var(--ease);
+}
+.project-card:hover .project-card__frame { border-color: var(--border-strong); }
+.project-card:hover .project-card__frame img { transform: scale(1.02); }
+
+.project-card__nombre { margin-top: 16px; font-size: 18px; line-height: 1.3; font-weight: 600; }
+.project-card__descripcion { margin-top: 8px; font-size: 15px; line-height: 24px; color: var(--ink-2); }
+.project-card__meta {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--muted);
+}
+
+/* Chip: solo tecnologías */
+.chip {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--surface);
+  border-radius: var(--radius-s);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--ink-2);
+}
+
+/* Enlace al repo: touch target 44px */
+.project-card__enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---- Sobre mí / stack -------------------------------------------------- */
+.sobre-mi__texto p + p { margin-top: 16px; }
+.stack { margin-top: 32px; display: grid; gap: 16px; }
+.stack__grupo h3 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--muted);
+}
+.stack__grupo ul {
+  margin-top: 8px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---- Contacto ---------------------------------------------------------- */
+.contacto__lista { margin-top: 24px; padding: 0; list-style: none; display: grid; gap: 8px; }
+.contacto__enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---- Footer ------------------------------------------------------------ */
+.footer { margin-top: var(--section-gap); border-top: 1px solid var(--border); }
+.footer__inner {
+  max-width: var(--max-content);
+  margin: 0 auto;
+  padding: 24px var(--gutter);
+}
+.footer__nota { font-size: 13px; color: var(--muted); }
+
+/* ---- Movimiento -------------------------------------------------------- */
+/* Entrada escalonada de portada: 400ms, 60ms entre elementos (DESIGN-001 §5) */
+.hero__inner > * {
+  animation: hero-in var(--t-hero) var(--ease) both;
+}
+.hero__inner > *:nth-child(1) { animation-delay: 0ms; }
+.hero__inner > *:nth-child(2) { animation-delay: 60ms; }
+.hero__inner > *:nth-child(3) { animation-delay: 120ms; }
+.hero__inner > *:nth-child(4) { animation-delay: 180ms; }
+.hero__inner > *:nth-child(5) { animation-delay: 240ms; }
+.hero__inner > *:nth-child(6) { animation-delay: 300ms; }
+
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Con prefers-reduced-motion: ninguna animación (DESIGN-001 §5) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
